@@ -2,18 +2,33 @@ const Engine = Matter.Engine;
 const World  = Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
+
 let engine;
 let world;
 let canvas;
+
 let bg;
 let bgImg;
+
 let ground;
 let platform;
+
 let box1,box2,box3,box4,box5;
+
+let pig1,pig2;
+
+let birdFlySound;
+let pigShotSound;
+let birdSelectSound;
+
+let log1,log2,log3,log4;
 
 function preload(){
     getBackgroundImg();
 
+    birdFlySound = loadSound("assets/bird_flying.mp3");
+    pigShotSound = loadSound("assets/pig_snort.mp3");
+    birdSelectSound = loadSound("assets/bird_select.mp3");
 }
 
 function setup(){
@@ -29,13 +44,19 @@ function setup(){
     //primeiro andar
     box1 = new Box(700,320,70,70);
     box2 = new Box(920,320,70,70);
+    pig1 = new Pig(810,350);
+    log1 = new Log(810,260,300,PI/2);
     
     //segundo andar
     box3 = new Box(700,240,70,70);
     box4 = new Box(920,240,70,70);
+    pig2 = new Pig(810,226);
+    log2 = new Log(810,130,300,PI/2);
 
     //teto
     box5 = new Box(810,100,70,70);
+    log3 = new Log(760,70,150,PI/10);
+    log4 = new Log(870,70,150,-PI/10);
 
 }
 
@@ -47,11 +68,19 @@ function draw (){
     box1.display();
     box2.display();
     ground.display();
+    pig1.display();
+    pig1.score();
+    log1.display();
 
     box3.display();
     box4.display();
+    pig2.display();
+    pig2.score();
+    log2.display();
 
     box5.display();
+    log3.display();
+    log4.display();
     
     platform.display();
 }
