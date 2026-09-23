@@ -23,6 +23,16 @@ let birdSelectSound;
 
 let log1,log2,log3,log4;
 
+let bird1,bird2,bird3,bird4;
+
+let birds = [];
+
+let slingshot;
+
+let gameState = "onSling";
+
+let score = 0;
+
 function preload(){
     getBackgroundImg();
 
@@ -58,12 +68,36 @@ function setup(){
     log3 = new Log(760,70,150,PI/10);
     log4 = new Log(870,70,150,-PI/10);
 
+    //birds
+    bird1 = new Bird(200, 50);
+    bird2 = new Bird(150, 170);
+    bird3 = new Bird(100, 170);
+    bird4 = new Bird(50,170);
+
+    birds.push(bird4,bird3,bird2,bird1);
+
+    slingshot = new Slingshot(bird1.body,{x:200, y:50});
 }
 
 function draw (){
     background(backgroundImg);
 
     Engine.update(engine);
+
+    noStroke();
+    textFont("Impact");
+    textSize(20);
+    fill("red");
+    text("score: "+score,width - 300, 20);
+
+    if(birds.length > 0){
+        text("Press space key for next bird",width/2-200,25);
+        text("bird: "+ birds.length, width/2-100,60);
+    }
+
+    else{
+        text("click on reload button to reload the game level",width/2-200,70);
+    }
 
     box1.display();
     box2.display();
@@ -82,7 +116,14 @@ function draw (){
     log3.display();
     log4.display();
     
+    bird1.display();
+    bird2.display();
+    bird3.display();
+    bird4.display();
+    
     platform.display();
+
+    slingshot.display();
 }
 
 function getBackgroundImg(){
@@ -94,4 +135,12 @@ function getBackgroundImg(){
         bg = "assets/bg2.jpg";
     }
     backgroundImg = loadImage(bg);
+}
+
+function mouseDragged(){
+    if(gameState !== "launched" && birds.length > 0){
+        let currentBird = birds[birds.length-1];
+        Matter.Body.setPosition(currentBird.body,{x:mouseX, y:mouseY});
+        return false;
+    }
 }
