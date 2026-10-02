@@ -144,3 +144,30 @@ function mouseDragged(){
         return false;
     }
 }
+
+function mouseReleased(){
+    if(birds.length>0){
+        slingshot.fly();
+        birdFlySound.play();
+        birds.pop();
+        gameState = "launched";
+    }
+    return false;
+}
+
+function keyPressed(){
+    if(keyCode === 32 && gameState === "launched" && birds.length > 0){
+        let currentBird = birds [birds.length - 1];
+        Matter.Body.setPosition(currentBird.body, {x:200, y:50});
+        slingshot.attach(currentBird.body);
+        gameState = "onSling";
+        birdSelectSound.play();
+
+    }
+}
+
+function mousePressed(){
+    if(gameState !== "launched" && birds.length > 0){
+        birdSelectSound.play();
+    }
+}
